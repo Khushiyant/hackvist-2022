@@ -60,7 +60,7 @@ class UserAccount(AbstractBaseUser):
         return self.email
 
 class NGO(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
 
@@ -75,7 +75,7 @@ class NGO(models.Model):
         return self.email
 
 class Community(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     members_count = models.IntegerField()
 
     # auditing model
