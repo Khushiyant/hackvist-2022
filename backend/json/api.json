@@ -1,0 +1,25 @@
+{
+    "api_info":[
+        {
+            "api_id":"api1",
+            "api_name":"api1",
+            "api_version":"1.0.0",
+            "api_provider":"admin",
+            "api_business_owner":"admin",
+            "api_technical_owner":"admin",
+            "api_endpoint":"http://localhost:8000/api1",
+            "api_description":"api1",
+            "api_context":"/api1",
+            "api_type":"HTTP",
+            "api_is_default_version":true,
+            "api_is_response_caching_enabled":false,
+            "api_is_advertise_only":false,
+            "api_is_latest":true,
+            "api_is_featured":false,
+            "api_is_business_information_shared":false,
+            "api_is_endpoint_secured":false,
+            "api_is_endpoint_auth_basic":false,
+            "api_is_endpoint_token_gen_jwt":true
+        }
+    ]
+}
