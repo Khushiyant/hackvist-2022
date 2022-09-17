@@ -3,3 +3,9 @@ venv/
 
 # SQLite
 *.sqlite3
+
+# Pycache
+__pycache__/
+
+# DS_Store
+.DS_Store
