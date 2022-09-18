@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db import models
 from django.utils import timezone
+
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, password=None, phone=None, description=None, location=None, coordinator=None):
@@ -40,13 +41,15 @@ class UserAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class UserAccount(AbstractBaseUser):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=10, unique=True)
     description = models.TextField()
     location = models.CharField(max_length=255)
-    coordinator = models.models.CharField(max_length=50, default='None')
+    coordinator = models.CharField(max_length=50, default='None')
+    profile_image = models.URLField(max_length=300, null=True, blank=True)
 
     objects = UserAccountManager()
 
@@ -58,6 +61,7 @@ class UserAccount(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
 
 class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
@@ -74,6 +78,7 @@ class NGO(models.Model):
     def __str__(self):
         return self.email
 
+
 class Community(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     members_count = models.IntegerField()
@@ -82,5 +87,8 @@ class Community(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def get_name(self):
+        return self.name
+        
     def __str__(self):
         return self.name
