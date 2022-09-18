@@ -3,6 +3,12 @@ from django.db import models
 from django.utils import timezone
 
 
+class UserTypes(models.TextChoices):
+    NGO = 'NGO'
+    COMMUNITY = 'COMMUNITY'
+    INDIVIDUAL = 'INDIVIDUAL'
+
+
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, password=None, phone=None, description=None, location=None, coordinator=None):
         if not email:
@@ -46,15 +52,17 @@ class UserAccount(AbstractBaseUser):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=10, unique=True)
-    description = models.TextField()
-    location = models.CharField(max_length=255)
-    coordinator = models.CharField(max_length=50, default='None')
     profile_image = models.URLField(max_length=300, null=True, blank=True)
+    user_type = models.CharField(max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
+
+    # audit fields
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["__all__"]
+    REQUIRED_FIELDS = ["name", "phone", "email", "user_type"]
 
     def get_name(self):
         return self.name
@@ -67,6 +75,9 @@ class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
+    coordinator = models.CharField(max_length=50, default='None')
+    description = models.TextField()
+    location = models.CharField(max_length=255)
 
     # auditing model
     created_at = models.DateTimeField(default=timezone.now)
@@ -82,6 +93,9 @@ class NGO(models.Model):
 class Community(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     members_count = models.IntegerField()
+    coordinator = models.CharField(max_length=50, default='None')
+    description = models.TextField()
+    location = models.CharField(max_length=255)
 
     # auditing model
     created_at = models.DateTimeField(default=timezone.now)
@@ -89,6 +103,6 @@ class Community(models.Model):
 
     def get_name(self):
         return self.name
-        
+
     def __str__(self):
         return self.name
