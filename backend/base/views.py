@@ -23,6 +23,15 @@ def get_tokens_for_user(user):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def refresh(request):
+    user = request.user
+    token = get_tokens_for_user(user)
+
+    return Response({'token': token}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 def apiOverview(request):
     overview = json.load(open('json/api.json'))
     return Response(overview, status=status.HTTP_200_OK)
