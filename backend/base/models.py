@@ -10,7 +10,7 @@ class UserTypes(models.TextChoices):
 
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, name, password=None, phone=None, description=None, location=None, coordinator=None):
+    def create_user(self, email, name, password=None, phone=None, profile_image=None, user_type=UserTypes.INDIVIDUAL):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -18,16 +18,15 @@ class UserAccountManager(BaseUserManager):
             email=self.normalize_email(email),
             name=name,
             phone=phone,
-            description=description,
-            location=location,
-            coordinator=coordinator,
+            profile_image=profile_image,
+            user_type=user_type,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, name, password=None, phone=None, description=None, location=None, coordinator=None):
+    def create_superuser(self, email, name, password=None, phone=None, profile_image=None, user_type=UserTypes.INDIVIDUAL):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -36,9 +35,8 @@ class UserAccountManager(BaseUserManager):
             password=password,
             name=name,
             phone=phone,
-            description=description,
-            location=location,
-            coordinator=coordinator,
+            profile_image=profile_image,
+            user_type=user_type,
         )
 
         user.is_superuser = True
