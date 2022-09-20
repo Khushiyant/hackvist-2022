@@ -7,7 +7,7 @@
             "api_provider":"admin",
             "api_business_owner":"admin",
             "api_technical_owner":"admin",
-            "api_endpoint":"http://localhost:8000/api1",
+            "api_endpoint":"http://localhost:8000/api-overview",
             "api_description":"api1",
             "api_context":"/api1",
             "api_type":"HTTP",
