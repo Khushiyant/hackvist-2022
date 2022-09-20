@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import NGO, Community, UserAccount
+from .models import NGO, Community, UserAccount, Event, SocialProject, DonationQuote
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     # Confirm password field in our Registratin Request
@@ -61,13 +61,6 @@ class UserChangePasswordSerializer(serializers.Serializer):
         user.save()
         return attrs
 
-
-class UserAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserAccount
-        fields = '__all__'
-
-
 class NGOSerializer(serializers.ModelSerializer):
     class Meta:
         model = NGO
@@ -77,4 +70,19 @@ class NGOSerializer(serializers.ModelSerializer):
 class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
+        fields = '__all__'
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+class SocialProjectsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialProject
+        fields = '__all__'
+
+class DonationQuoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonationQuote
         fields = '__all__'
