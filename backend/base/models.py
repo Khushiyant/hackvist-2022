@@ -53,6 +53,8 @@ class UserAccount(AbstractBaseUser):
     profile_image = models.URLField(max_length=300, null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
 
+    premium_user_at = models.DateTimeField(null=True)
+
     # audit fields
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -94,6 +96,60 @@ class Community(models.Model):
     coordinator = models.CharField(max_length=50, default='None')
     description = models.TextField()
     location = models.CharField(max_length=255)
+
+    # auditing model
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_name(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class Event(models.Model):
+    organiser = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    location = models.CharField(max_length=255)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    active_at = models.DateTimeField(null=True)
+
+    # auditing model
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_name(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class SocialProjects(models.Model):
+    maintainer = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    location = models.CharField(max_length=255)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    active_at = models.DateTimeField(null=True)
+
+    # auditing model
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_name(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class DonationQuote(models.Model):
+    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    amount = models.IntegerField(null=True)
+    description = models.TextField()
+    active_at = models.DateTimeField(null=True)
 
     # auditing model
     created_at = models.DateTimeField(default=timezone.now)
