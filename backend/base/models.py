@@ -62,7 +62,7 @@ class UserAccount(AbstractBaseUser):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["name", "phone", "email", "user_type"]
+    REQUIRED_FIELDS = ["name", "phone", "user_type"]
 
     def get_name(self):
         return self.name
