@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import NGO, Community, UserAccount
-from .serializers import (CommunitySerializer, NGOSerializer, UserLoginSerializer,
+from .serializers import (CommunitySerializer, NGOSerializer, UserLoginSerializer, UserProfileSerializer,
                           UserRegistrationSerializer)
 
 
@@ -65,7 +65,7 @@ def login(request):
 @permission_classes([IsAuthenticated])
 def ngo_register(request):
     user = request.user
-    if user.user_type == 'Community':
+    if user.user_type == 'NGO':
         data = request.data
         data['user'] = user.id
         serializer = NGOSerializer(data=data)
@@ -80,7 +80,7 @@ def ngo_register(request):
 @permission_classes([IsAuthenticated])
 def community_register(request):    
     user = request.user
-    if user.user_type == 'Community':
+    if user.user_type == 'COMMUNITY':
         data = request.data
         data['user'] = user.id
         serializer = CommunitySerializer(data=data)
@@ -95,7 +95,7 @@ def community_register(request):
 @permission_classes([IsAuthenticated])
 def user_details(request):
     user = request.user
-    serializer = UserAccountSerializer(user)
+    serializer = UserProfileSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -104,6 +104,13 @@ def user_details(request):
 def ngo_details(request):
     ngo = NGO.objects.get(user=request.user)
     serializer = NGOSerializer(ngo)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def community_details(request):
+    community = Community.objects.get(user=request.user)
+    serializer = CommunitySerializer(community)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -133,7 +140,7 @@ def update_community(request):
 @permission_classes([IsAuthenticated])
 def update_user(request):
     user = request.user
-    serializer = UserAccountSerializer(instance=user, data=request.data)
+    serializer = UserProfileSerializer(instance=user, data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)

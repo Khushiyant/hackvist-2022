@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import NGO, Community, UserAccount, Event, SocialProject, DonationQuote
+from .models import NGO, Community, UserAccount, Event, SocialProject
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     # Confirm password field in our Registratin Request
@@ -82,7 +82,7 @@ class SocialProjectsSerializer(serializers.ModelSerializer):
         model = SocialProject
         fields = '__all__'
 
-class DonationQuoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DonationQuote
-        fields = '__all__'
+# class DonationQuoteSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = DonationQuote
+#         fields = '__all__'
