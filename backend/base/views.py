@@ -7,9 +7,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import NGO, Community, UserAccount, Event, SocialProject
-from .serializers import (CommunitySerializer, NGOSerializer, UserLoginSerializer, UserProfileSerializer, EventSerializer,
-                          UserRegistrationSerializer, SocialProjectSerializer, UserChangePasswordSerializer)
+from .models import NGO, Community, Event, SocialProject, UserAccount
+from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
+                          SocialProjectSerializer,
+                          UserChangePasswordSerializer, UserLoginSerializer,
+                          UserProfileSerializer, UserRegistrationSerializer)
 
 
 def get_tokens_for_user(user):
@@ -169,6 +171,7 @@ def create_event(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response({'message': 'Event Created'}, status=status.HTTP_201_CREATED)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])

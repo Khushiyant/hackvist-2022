@@ -15,6 +15,7 @@ class DonationTypes(models.TextChoices):
     CLOTHES = 'CLOTHES'
     OTHERS = 'OTHERS'
 
+
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, password=None, phone=None, profile_image=None, user_type=UserTypes.INDIVIDUAL):
         if not email:
@@ -57,7 +58,8 @@ class UserAccount(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=10, unique=True)
     profile_image = models.URLField(max_length=300, null=True, blank=True)
-    user_type = models.CharField(max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
+    user_type = models.CharField(
+        max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
 
@@ -113,6 +115,7 @@ class Community(models.Model):
     def __str__(self):
         return self.name
 
+
 class Event(models.Model):
     organiser = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -131,6 +134,7 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class SocialProject(models.Model):
     maintainer = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
@@ -151,11 +155,15 @@ class SocialProject(models.Model):
     def __str__(self):
         return self.name
 
-class DonationQuote(models.Model):
-    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='donor')
-    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='receiver')
 
-    donation_type = models.CharField(max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
+class DonationQuote(models.Model):
+    donor = models.ForeignKey(
+        UserAccount, on_delete=models.CASCADE, related_name='donor')
+    receiver = models.ForeignKey(
+        UserAccount, on_delete=models.CASCADE, related_name='receiver')
+
+    donation_type = models.CharField(
+        max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
     description = models.TextField()
     active_at = models.DateTimeField(null=True)
 

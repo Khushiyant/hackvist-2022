@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import NGO, Community, UserAccount, Event, SocialProject, DonationQuote
+from .models import (NGO, Community, DonationQuote, Event, SocialProject,
+                     UserAccount)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
