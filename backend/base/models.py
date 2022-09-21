@@ -9,6 +9,12 @@ class UserTypes(models.TextChoices):
     INDIVIDUAL = 'INDIVIDUAL'
 
 
+class DonationTypes(models.TextChoices):
+    MONETARY = 'MONETARY'
+    FOOD = 'FOOD'
+    CLOTHES = 'CLOTHES'
+    OTHERS = 'OTHERS'
+
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, password=None, phone=None, profile_image=None, user_type=UserTypes.INDIVIDUAL):
         if not email:
@@ -145,19 +151,22 @@ class SocialProject(models.Model):
     def __str__(self):
         return self.name
 
-# class DonationQuote(models.Model):
-#     donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-#     receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-#     amount = models.IntegerField(null=True)
-#     description = models.TextField()
-#     active_at = models.DateTimeField(null=True)
+class DonationQuote(models.Model):
+    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
 
-#     # auditing model
-#     created_at = models.DateTimeField(default=timezone.now)
-#     updated_at = models.DateTimeField(auto_now=True)
+    donation_type = models.CharField(max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
+    description = models.TextField()
+    active_at = models.DateTimeField(null=True)
 
-#     def get_name(self):
-#         return self.name
+    is_accepted = models.BooleanField(null=True, default=None)
 
-#     def __str__(self):
-#         return self.name
+    # auditing model
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_name(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
