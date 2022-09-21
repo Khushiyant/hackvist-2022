@@ -53,7 +53,7 @@ class UserAccount(AbstractBaseUser):
     profile_image = models.URLField(max_length=300, null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
 
-    premium_user_at = models.DateTimeField(null=True)
+    premium_user_at = models.DateTimeField(null=True, default=None)
 
     # audit fields
     created_at = models.DateTimeField(default=timezone.now)
@@ -62,7 +62,7 @@ class UserAccount(AbstractBaseUser):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["name", "phone", "email", "user_type"]
+    REQUIRED_FIELDS = ["name", "phone", "user_type"]
 
     def get_name(self):
         return self.name
@@ -126,7 +126,7 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-class SocialProjects(models.Model):
+class SocialProject(models.Model):
     maintainer = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
