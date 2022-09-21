@@ -77,7 +77,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = '__all__'
 
-class SocialProjectsSerializer(serializers.ModelSerializer):
+class SocialProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialProject
         fields = '__all__'
