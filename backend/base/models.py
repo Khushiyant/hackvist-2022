@@ -145,19 +145,19 @@ class SocialProject(models.Model):
     def __str__(self):
         return self.name
 
-class DonationQuote(models.Model):
-    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    amount = models.IntegerField(null=True)
-    description = models.TextField()
-    active_at = models.DateTimeField(null=True)
+# class DonationQuote(models.Model):
+#     donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+#     receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+#     amount = models.IntegerField(null=True)
+#     description = models.TextField()
+#     active_at = models.DateTimeField(null=True)
 
-    # auditing model
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
+#     # auditing model
+#     created_at = models.DateTimeField(default=timezone.now)
+#     updated_at = models.DateTimeField(auto_now=True)
 
-    def get_name(self):
-        return self.name
+#     def get_name(self):
+#         return self.name
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
