@@ -15,5 +15,6 @@ urlpatterns = [
     path('update-user/', views.update_user, name="update-user"),
     path('create-social-project/', views.create_social_project, name="create-social-project"),
     path('create-event/', views.create_event, name="create-event"),
+    path('change-password/', views.change_password, name="change-password"), # Under Development
     path('refresh/', views.refresh, name="refresh"),
 ]
