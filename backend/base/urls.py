@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("api-overview/", views.apiOverview, name="api-overview"),
+    path("api-overview/", views.api_overview, name="api-overview"),
     path('login/', views.login, name="login"),
     path('registration/', views.register, name="registration"),
     path('ngo-register/', views.ngo_register, name="ngo-register"),

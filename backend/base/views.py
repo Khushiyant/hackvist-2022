@@ -33,7 +33,7 @@ def refresh(request):
 
 
 @api_view(['GET'])
-def apiOverview(request):
+def api_overview(request):
     overview = json.load(open('json/api.json'))
     return Response(overview, status=status.HTTP_200_OK)
 
