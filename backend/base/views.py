@@ -8,8 +8,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import NGO, Community, UserAccount
-from .serializers import (CommunitySerializer, NGOSerializer,
-                          UserAccountSerializer, UserLoginSerializer,
+from .serializers import (CommunitySerializer, NGOSerializer, UserLoginSerializer,
                           UserRegistrationSerializer)
 
 
