@@ -152,8 +152,8 @@ class SocialProject(models.Model):
         return self.name
 
 class DonationQuote(models.Model):
-    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='donor')
+    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='receiver')
 
     donation_type = models.CharField(max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
     description = models.TextField()
