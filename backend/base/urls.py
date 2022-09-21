@@ -8,6 +8,8 @@ urlpatterns = [
     path('ngo-register/', views.ngo_register),
     path('community-register/', views.community_register),
     path('user-details/', views.user_details),
+    path('ngo-details/', views.ngo_details),
+    path('community-details/', views.community_details),
     path('update-ngo/', views.update_ngo),
     path('update-community/', views.update_community),
     path('update-user/', views.update_user),

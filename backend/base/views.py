@@ -65,23 +65,31 @@ def login(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ngo_register(request):
-    # -------Under development--------
-    data = request.data
-    serializer = NGOSerializer(data=data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'NGO Registration Successful'}, status=status.HTTP_201_CREATED)
+    user = request.user
+    if user.user_type == 'Community':
+        data = request.data
+        data['user'] = user.id
+        serializer = NGOSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'Community Registration Successful'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'message': 'You are not a NGO User'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def community_register(request):
-    # -------Under development--------
-    data = request.data
-    serializer = CommunitySerializer(data=data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'Community Registration Successful'}, status=status.HTTP_201_CREATED)
+def community_register(request):    
+    user = request.user
+    if user.user_type == 'Community':
+        data = request.data
+        data['user'] = user.id
+        serializer = CommunitySerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'Community Registration Successful'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'message': 'You are not a Community User'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -92,10 +100,17 @@ def user_details(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def ngo_details(request):
+    ngo = NGO.objects.get(user=request.user)
+    serializer = NGOSerializer(ngo)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_ngo(request):
-    # -------Under development--------
     user = request.user
     ngo = NGO.objects.get(user=user)
     serializer = NGOSerializer(instance=ngo, data=request.data)
@@ -107,7 +122,6 @@ def update_ngo(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_community(request):
-    # -------Under development--------
     user = request.user
     community = Community.objects.get(user=user)
     serializer = CommunitySerializer(instance=community, data=request.data)

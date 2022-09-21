@@ -147,6 +147,7 @@ class SocialProject(models.Model):
 
 class DonationQuote(models.Model):
     donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     amount = models.IntegerField(null=True)
     description = models.TextField()
     active_at = models.DateTimeField(null=True)
