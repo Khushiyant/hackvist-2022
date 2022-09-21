@@ -81,6 +81,7 @@ class UserAccount(AbstractBaseUser):
 
 class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    registration_number = models.CharField(max_length=255)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
