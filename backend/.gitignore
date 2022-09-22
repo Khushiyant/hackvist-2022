@@ -16,3 +16,6 @@ tmp/
 
 # Migration Files
 base/migrations/
+
+# .env file
+.env

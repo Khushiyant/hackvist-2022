@@ -15,6 +15,10 @@ urlpatterns = [
     path('update-user/', views.update_user, name="update-user"),
     path('create-social-project/', views.create_social_project, name="create-social-project"),
     path('create-event/', views.create_event, name="create-event"),
+    path('get-all-events/', views.get_all_events, name="get-all-events"),
+    path('get-all-projects/', views.get_all_projects, name="get-all-projects"),
     path('change-password/', views.change_password, name="change-password"), # Under Development
     path('refresh/', views.refresh, name="refresh"),
+    path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
+    path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"),
 ]
