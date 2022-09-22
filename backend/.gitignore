@@ -1,5 +1,6 @@
 # Virtual Env
 venv/
+env/
 
 # SQLite
 *.sqlite3
@@ -12,3 +13,6 @@ __pycache__/
 
 # Temporary files
 tmp/
+
+# Migration Files
+base/migrations/
