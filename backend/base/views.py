@@ -7,9 +7,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import NGO, Community, UserAccount
-from .serializers import (CommunitySerializer, NGOSerializer, UserLoginSerializer, UserProfileSerializer,
-                          UserRegistrationSerializer)
+from .models import NGO, Community, Event, SocialProject, UserAccount
+from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
+                          SocialProjectSerializer,
+                          UserChangePasswordSerializer, UserLoginSerializer,
+                          UserProfileSerializer, UserRegistrationSerializer)
 
 
 def get_tokens_for_user(user):
@@ -31,7 +33,7 @@ def refresh(request):
 
 
 @api_view(['GET'])
-def apiOverview(request):
+def api_overview(request):
     overview = json.load(open('json/api.json'))
     return Response(overview, status=status.HTTP_200_OK)
 
@@ -78,7 +80,7 @@ def ngo_register(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def community_register(request):    
+def community_register(request):
     user = request.user
     if user.user_type == 'COMMUNITY':
         data = request.data
@@ -105,6 +107,7 @@ def ngo_details(request):
     ngo = NGO.objects.get(user=request.user)
     serializer = NGOSerializer(ngo)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -144,3 +147,40 @@ def update_user(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_social_project(request):
+    user = request.user
+    data = request.data
+    data['maintainer'] = user.id
+    serializer = SocialProjectSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({'message': 'Social Project Created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_event(request):
+    user = request.user
+    data = request.data
+    data['organiser'] = user.id
+    serializer = EventSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({'message': 'Event Created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    # ----- Under Development -----
+
+    user = request.user
+    serializer = UserChangePasswordSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user.set_password(serializer.validated_data['new_password'])
+    user.save()
+    return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 
@@ -7,6 +7,13 @@ class UserTypes(models.TextChoices):
     NGO = 'NGO'
     COMMUNITY = 'COMMUNITY'
     INDIVIDUAL = 'INDIVIDUAL'
+
+
+class DonationTypes(models.TextChoices):
+    MONETARY = 'MONETARY'
+    FOOD = 'FOOD'
+    CLOTHES = 'CLOTHES'
+    OTHERS = 'OTHERS'
 
 
 class UserAccountManager(BaseUserManager):
@@ -46,12 +53,15 @@ class UserAccountManager(BaseUserManager):
         return user
 
 
-class UserAccount(AbstractBaseUser):
+class UserAccount(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=10, unique=True)
     profile_image = models.URLField(max_length=300, null=True, blank=True)
-    user_type = models.CharField(max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
+    user_type = models.CharField(
+        max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
 
@@ -73,6 +83,7 @@ class UserAccount(AbstractBaseUser):
 
 class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    registration_number = models.CharField(max_length=255, default=None)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
@@ -107,6 +118,7 @@ class Community(models.Model):
     def __str__(self):
         return self.name
 
+
 class Event(models.Model):
     organiser = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -125,6 +137,7 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class SocialProject(models.Model):
     maintainer = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
@@ -145,19 +158,26 @@ class SocialProject(models.Model):
     def __str__(self):
         return self.name
 
-# class DonationQuote(models.Model):
-#     donor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-#     receiver = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-#     amount = models.IntegerField(null=True)
-#     description = models.TextField()
-#     active_at = models.DateTimeField(null=True)
 
-#     # auditing model
-#     created_at = models.DateTimeField(default=timezone.now)
-#     updated_at = models.DateTimeField(auto_now=True)
+class DonationQuote(models.Model):
+    donor = models.ForeignKey(
+        UserAccount, on_delete=models.CASCADE, related_name='donor')
+    receiver = models.ForeignKey(
+        UserAccount, on_delete=models.CASCADE, related_name='receiver')
 
-#     def get_name(self):
-#         return self.name
+    donation_type = models.CharField(
+        max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
+    description = models.TextField()
+    active_at = models.DateTimeField(null=True)
 
-#     def __str__(self):
-#         return self.name
+    is_accepted = models.BooleanField(null=True, default=None)
+
+    # auditing model
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_name(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
