@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.contrib.auth import authenticate
 from rest_framework import status
@@ -210,3 +211,9 @@ def valid_registeration_id(request, state, id):
         if ngo['reg_id'][0] == id:
             return Response({'message': 'Valid NGO'}, status=status.HTTP_200_OK)
     return Response({'message': 'Invalid NGO'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_all_ngo_states(request):
+    states = [x.split(".")[0] for x in os.listdir("json/ngos")]
+    return Response({"states": states}, status=status.HTTP_200_OK)
