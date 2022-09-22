@@ -19,4 +19,5 @@ urlpatterns = [
     path('get-all-projects/', views.get_all_projects, name="get-all-projects"),
     path('change-password/', views.change_password, name="change-password"), # Under Development
     path('refresh/', views.refresh, name="refresh"),
+    path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
 ]

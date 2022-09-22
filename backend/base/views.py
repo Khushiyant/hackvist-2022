@@ -200,3 +200,13 @@ def get_all_projects(request):
     projects = SocialProject.objects.all()
     serializer = SocialProjectSerializer(projects, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def valid_registeration_id(request, state, id):
+    data = json.load(open(f"json/ngos/{state}.json", "r"))
+    for ngo in data:
+        if ngo['reg_id'][0] == id:
+            return Response({'message': 'Valid NGO'}, status=status.HTTP_200_OK)
+    return Response({'message': 'Invalid NGO'}, status=status.HTTP_400_BAD_REQUEST)
