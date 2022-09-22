@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 
@@ -53,13 +53,15 @@ class UserAccountManager(BaseUserManager):
         return user
 
 
-class UserAccount(AbstractBaseUser):
+class UserAccount(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=10, unique=True)
     profile_image = models.URLField(max_length=300, null=True, blank=True)
     user_type = models.CharField(
         max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
 
@@ -81,7 +83,7 @@ class UserAccount(AbstractBaseUser):
 
 class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
-    registration_number = models.CharField(max_length=255)
+    registration_number = models.CharField(max_length=255, default=None)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
