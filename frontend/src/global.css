@@ -8,7 +8,7 @@
 
 @layer utilities {
     .bg-alabaster {
-        background-color: #F9F9F9;
+        background-color: #EAEAEA;
     }
 
     .bg-gradiant {
@@ -22,9 +22,16 @@
     }
 }
 
+*,
+*::before,
+*::after {
+    font-family: 'Roboto', 'sans-serif';
+}
+
 body {
     min-height: 100vh;
     display: block;
+    background-color: #F1F1F145;
 }
 
 .loginForm_formGroup:has(input:focus),

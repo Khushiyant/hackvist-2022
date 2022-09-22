@@ -7,11 +7,11 @@ import AppState from './context/AppState';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AppState>
       <Router>
         <App />
       </Router>
     </AppState>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
