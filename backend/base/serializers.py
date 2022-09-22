@@ -5,25 +5,20 @@ from .models import (NGO, Community, DonationQuote, Event, SocialProject,
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    # Confirm password field in our Registratin Request
-    password2 = serializers.CharField(
-        style={'input_type': 'password'}, write_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = UserAccount
-        fields = "__all__"
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
+        fields = ['email', 'name', 'phone', 'profile_image', 'user_type', 'password']
 
     # Validating Password and Confirm Password while Registration
-    def validate(self, attrs):
-        password = attrs.get('password')
-        password2 = attrs.get('password2')
-        if password != password2:
-            raise serializers.ValidationError(
-                "Password and Confirm Password doesn't match")
-        return attrs
+    # def validate(self, attrs):
+    #     password = attrs.get('password')
+    #     password2 = attrs.get('password2')
+    #     if password != password2:
+    #         raise serializers.ValidationError(
+    #             "Password and Confirm Password doesn't match")
+    #     return attrs
 
     def create(self, validate_data):
         return UserAccount.objects.create_user(**validate_data)
