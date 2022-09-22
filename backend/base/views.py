@@ -184,3 +184,19 @@ def change_password(request):
     user.set_password(serializer.validated_data['new_password'])
     user.save()
     return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_events(request):
+    events = Event.objects.all()
+    serializer = EventSerializer(events, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_projects(request):
+    projects = SocialProject.objects.all()
+    serializer = SocialProjectSerializer(projects, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
