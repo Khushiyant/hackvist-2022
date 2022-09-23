@@ -82,7 +82,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class NGO(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='ngo')
     registration_number = models.CharField(max_length=255, default=None)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
@@ -102,7 +102,7 @@ class NGO(models.Model):
 
 
 class Community(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='community')
     members_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
     description = models.TextField()
