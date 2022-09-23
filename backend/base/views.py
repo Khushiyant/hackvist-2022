@@ -177,14 +177,16 @@ def create_event(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
-    # ----- Under Development -----
-
     user = request.user
-    serializer = UserChangePasswordSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user.set_password(serializer.validated_data['new_password'])
-    user.save()
-    return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)
+    data = request.data
+    old_password = data['old_password']
+    new_password = data['new_password']
+    if user.check_password(old_password):
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'message': 'Old Password is not correct'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
