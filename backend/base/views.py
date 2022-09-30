@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import NGO, Community, Event, SocialProject, UserAccount
+from .models import NGO, Community, Event, SocialProject, UserAccount, DonationQuote
 from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
                           SocialProjectSerializer,
                           UserChangePasswordSerializer, UserLoginSerializer,
@@ -61,7 +61,7 @@ def login(request):
     if user is not None:
         token = get_tokens_for_user(user)
         is_premium = True if user.premium_user_at else False
-        return Response({'token': token, 'msg': 'Login Success', 'premium_user':is_premium}, status=status.HTTP_200_OK)
+        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
@@ -116,7 +116,7 @@ def ngo_details(request):
 
     serializer_user = UserProfileSerializer(user)
     serializer_ngo = NGOSerializer(ngo)
-    return Response({'user':serializer_user.data,'ngo': serializer_ngo.data}, status=status.HTTP_200_OK)
+    return Response({'user': serializer_user.data, 'ngo': serializer_ngo.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -127,7 +127,7 @@ def community_details(request):
 
     serializer_user = UserProfileSerializer(user)
     serializer_community = CommunitySerializer(community)
-    return Response({'user':serializer_user.data,'community': serializer_community.data}, status=status.HTTP_200_OK)
+    return Response({'user': serializer_user.data, 'community': serializer_community.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])
@@ -143,6 +143,7 @@ def update_ngo(request):
     except NGO.DoesNotExist:
         return Response({'message': 'NGO Does Not Exist'}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_community(request):
@@ -155,6 +156,7 @@ def update_community(request):
         return Response({'message': 'Community Details Updated'}, status=status.HTTP_200_OK)
     except Community.DoesNotExist:
         return Response({'message': 'Community Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -252,3 +254,30 @@ def create_donation(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response({'message': 'Donation Created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_donations(request):
+    # only donations with is_accepted = None
+    donations = DonationQuote.objects.filter(is_accepted=None)
+    serializer = DonationQuoteSerializer(donations, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def accept_donation(request, id):
+    donation = DonationQuote.objects.get(id=id)
+    donation.is_accepted = True
+    donation.save()
+    return Response({'message': 'Donation Accepted'}, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def reject_donation(request, id):
+    donation = DonationQuote.objects.get(id=id)
+    donation.is_accepted = False
+    donation.save()
+    return Response({'message': 'Donation Rejected'}, status=status.HTTP_200_OK)
