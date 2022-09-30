@@ -1,5 +1,6 @@
 import json
 import os
+from re import U
 
 from django.contrib.auth import authenticate
 from rest_framework import status
@@ -8,11 +9,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import NGO, Community, Event, SocialProject, UserAccount
+from .models import NGO, Community, Event, SocialProject, UserAccount, DonationQuote
 from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
                           SocialProjectSerializer,
                           UserChangePasswordSerializer, UserLoginSerializer,
-                          UserProfileSerializer, UserRegistrationSerializer)
+                          UserProfileSerializer, UserRegistrationSerializer, DonationQuoteSerializer)
 
 
 def get_tokens_for_user(user):
@@ -45,6 +46,9 @@ def register(request):
     serializer = UserRegistrationSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
+    if user.user_type == 'INDIVIDUAL':
+        user.is_registeration_complete = True
+        user.save()
     token = get_tokens_for_user(user)
 
     return Response({'token': token, 'message': 'Registration Successful'}, status=status.HTTP_201_CREATED)
@@ -59,7 +63,9 @@ def login(request):
     user = authenticate(email=email, password=password)
     if user is not None:
         token = get_tokens_for_user(user)
-        return Response({'token': token, 'msg': 'Login Success'}, status=status.HTTP_200_OK)
+        is_premium = True if user.premium_user_at else False
+        is_registered = True if user.is_registeration_complete else False
+        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium, 'registeration status' : is_registered}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
@@ -70,6 +76,8 @@ def ngo_register(request):
     user = request.user
     if user.user_type == 'NGO':
         data = request.data
+        user.is_registeration_complete = True
+        user.save()
         data['user'] = user.id
         serializer = NGOSerializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -85,6 +93,8 @@ def community_register(request):
     user = request.user
     if user.user_type == 'COMMUNITY':
         data = request.data
+        user.is_registeration_complete = True
+        user.save()
         data['user'] = user.id
         serializer = CommunitySerializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -105,55 +115,70 @@ def user_details(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def ngo_details(request):
+    user = request.user
     ngo = NGO.objects.get(user=request.user)
-    serializer = NGOSerializer(ngo)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    serializer_user = UserProfileSerializer(user)
+    serializer_ngo = NGOSerializer(ngo)
+    return Response({'user': serializer_user.data, 'ngo': serializer_ngo.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def community_details(request):
+    user = request.user
     community = Community.objects.get(user=request.user)
-    serializer = CommunitySerializer(community)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    serializer_user = UserProfileSerializer(user)
+    serializer_community = CommunitySerializer(community)
+    return Response({'user': serializer_user.data, 'community': serializer_community.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_ngo(request):
-    user = request.user
-    ngo = NGO.objects.get(user=user)
-    serializer = NGOSerializer(instance=ngo, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'NGO Details Updated'}, status=status.HTTP_200_OK)
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        ngo = NGO.objects.get(user=user)
+        serializer = NGOSerializer(instance=ngo, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'NGO Details Updated'}, status=status.HTTP_200_OK)
+    except NGO.DoesNotExist:
+        return Response({'message': 'NGO Does Not Exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_community(request):
-    user = request.user
-    community = Community.objects.get(user=user)
-    serializer = CommunitySerializer(instance=community, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'Community Details Updated'}, status=status.HTTP_200_OK)
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        community = Community.objects.get(user=user)
+        serializer = CommunitySerializer(instance=community, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'Community Details Updated'}, status=status.HTTP_200_OK)
+    except Community.DoesNotExist:
+        return Response({'message': 'Community Not Found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_user(request):
-    user = request.user
-    serializer = UserProfileSerializer(instance=user, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        serializer = UserProfileSerializer(instance=user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)
+    except UserAccount.DoesNotExist:
+        return Response({'message': 'User Does Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_social_project(request):
-    user = request.user
+    user = UserAccount.objects.get(id=request.user.id)
     data = request.data
     data['maintainer'] = user.id
     serializer = SocialProjectSerializer(data=data)
@@ -165,7 +190,7 @@ def create_social_project(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_event(request):
-    user = request.user
+    user = UserAccount.objects.get(id=request.user.id)
     data = request.data
     data['organiser'] = user.id
     serializer = EventSerializer(data=data)
@@ -177,14 +202,16 @@ def create_event(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
-    # ----- Under Development -----
-
     user = request.user
-    serializer = UserChangePasswordSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user.set_password(serializer.validated_data['new_password'])
-    user.save()
-    return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)
+    data = request.data
+    old_password = data['old_password']
+    new_password = data['new_password']
+    if user.check_password(old_password):
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password Changed'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'message': 'Old Password is not correct'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -217,3 +244,44 @@ def valid_registeration_id(request, state, id):
 def get_all_ngo_states(request):
     states = [x.split(".")[0] for x in os.listdir("json/ngos")]
     return Response({"states": states}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_donation(request):
+    donor = UserAccount.objects.get(id=request.user.id)
+    receiver = UserAccount.objects.get(id=request.data['receiver'])
+    data = request.data
+    data['donor'] = donor.id
+    data['receiver'] = receiver.id
+    serializer = DonationQuoteSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({'message': 'Donation Created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_donations(request):
+    # only donations with is_accepted = None
+    donations = DonationQuote.objects.filter(is_accepted=None)
+    serializer = DonationQuoteSerializer(donations, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def accept_donation(request, id):
+    donation = DonationQuote.objects.get(id=id)
+    donation.is_accepted = True
+    donation.save()
+    return Response({'message': 'Donation Accepted'}, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def reject_donation(request, id):
+    donation = DonationQuote.objects.get(id=id)
+    donation.is_accepted = False
+    donation.save()
+    return Response({'message': 'Donation Rejected'}, status=status.HTTP_200_OK)

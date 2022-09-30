@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path("api-overview/", views.api_overview, name="api-overview"),
-    path('login/', views.login, name="login"),
-    path('registration/', views.register, name="registration"),
+    path('login/', views.login, name="login"), #Implemented
+    path('registration/', views.register, name="registration"), #Implemented
     path('ngo-register/', views.ngo_register, name="ngo-register"),
     path('community-register/', views.community_register, name="community-register"),
     path('user-details/', views.user_details, name="user-details"),
@@ -15,10 +15,14 @@ urlpatterns = [
     path('update-user/', views.update_user, name="update-user"),
     path('create-social-project/', views.create_social_project, name="create-social-project"),
     path('create-event/', views.create_event, name="create-event"),
+    path('create-donation/', views.create_donation, name="create-donation"),
     path('get-all-events/', views.get_all_events, name="get-all-events"),
     path('get-all-projects/', views.get_all_projects, name="get-all-projects"),
-    path('change-password/', views.change_password, name="change-password"), # Under Development
+    path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"),
+    path('get-all-donations/', views.get_all_donations, name="get-all-quotes"),
+    path('accept-donation/<int:id>', views.accept_donation, name="accept-donation"),
+    path('reject-donation/<int:id>', views.reject_donation, name="reject-donation"),
+    path('change-password/', views.change_password, name="change-password"),  
     path('refresh/', views.refresh, name="refresh"),
     path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
-    path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"),
 ]

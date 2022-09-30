@@ -1,8 +1,11 @@
 import React from 'react'
 
-import Carousel from './Carousel'
-import About from './About'
-import Causes from './Causes'
+import Carousel from './components/Carousel'
+import About from './components/About';
+import Causes from './components/Causes';
+import Stats from './components/Stats'
+import HowItWorks from './components/HowItWorks'
+import GetInvolved from './components/GetInvolved'
 
 import { carouselData } from '../../constants/HomeCarouselData';
 import { causeData } from '../../constants/CauseData'
@@ -23,6 +26,9 @@ const Home = () => {
                         />
                     )
                 })}
+                <Stats />
+                <HowItWorks />
+                <GetInvolved />
             </main>
         </>
     )

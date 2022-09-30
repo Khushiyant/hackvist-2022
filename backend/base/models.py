@@ -62,8 +62,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    volunteer_at = models.CharField(max_length=10, unique=False)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
+    is_registeration_complete = models.BooleanField(default=False)
 
     # audit fields
     created_at = models.DateTimeField(default=timezone.now)
@@ -95,10 +97,10 @@ class NGO(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.user.name
 
     def __str__(self):
-        return self.email
+        return self.user.email
 
 
 class Community(models.Model):
@@ -113,10 +115,10 @@ class Community(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.user.name
 
     def __str__(self):
-        return self.name
+        return self.user.email
 
 
 class Event(models.Model):
@@ -168,7 +170,7 @@ class DonationQuote(models.Model):
     donation_type = models.CharField(
         max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
     description = models.TextField()
-    active_at = models.DateTimeField(null=True)
+    active_at = models.DateTimeField(default=timezone.now)
 
     is_accepted = models.BooleanField(null=True, default=None)
 
@@ -177,7 +179,7 @@ class DonationQuote(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.donor.name
 
     def __str__(self):
-        return self.name
+        return self.donor.email
