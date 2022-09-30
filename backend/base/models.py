@@ -170,7 +170,7 @@ class DonationQuote(models.Model):
     donation_type = models.CharField(
         max_length=20, choices=DonationTypes.choices, default=DonationTypes.MONETARY)
     description = models.TextField()
-    active_at = models.DateTimeField(null=True)
+    active_at = models.DateTimeField(default=timezone.now)
 
     is_accepted = models.BooleanField(null=True, default=None)
 
