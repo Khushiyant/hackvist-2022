@@ -72,6 +72,8 @@ def ngo_register(request):
     user = request.user
     if user.user_type == 'NGO':
         data = request.data
+        user.is_registeration_complete = True
+        user.save()
         data['user'] = user.id
         serializer = NGOSerializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -87,6 +89,8 @@ def community_register(request):
     user = request.user
     if user.user_type == 'COMMUNITY':
         data = request.data
+        user.is_registeration_complete = True
+        user.save()
         data['user'] = user.id
         serializer = CommunitySerializer(data=data)
         serializer.is_valid(raise_exception=True)
