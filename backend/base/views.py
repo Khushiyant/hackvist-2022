@@ -46,6 +46,9 @@ def register(request):
     serializer = UserRegistrationSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
+    if user.user_type == 'INDIVIDUAL':
+        user.is_registeration_complete = True
+        user.save()
     token = get_tokens_for_user(user)
 
     return Response({'token': token, 'message': 'Registration Successful'}, status=status.HTTP_201_CREATED)
@@ -61,7 +64,8 @@ def login(request):
     if user is not None:
         token = get_tokens_for_user(user)
         is_premium = True if user.premium_user_at else False
-        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium}, status=status.HTTP_200_OK)
+        is_registered = True if user.is_registeration_complete else False
+        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium, 'registeration status' : is_registered}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
