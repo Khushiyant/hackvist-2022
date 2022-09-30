@@ -9,6 +9,7 @@ const Navbar = () => {
             <div className="header_topHeader w-11/12 max-w-6xl mx-auto py-3 flex justify-between items-center">
                 <span className="topHeader_logoContainer px-4 text-theme-orange text-2xl font-roboto-slab font-bold">YOGDAN</span>
                 <div className="topHeader_btnContainer flex gap-6">
+                   
                     <button className='topHeader_btns bg-theme-orange px-3 py-1 rounded grid font-open-sans text-start uppercase text-xs font-bold text-white'>
                         Please Make Your<br />
                         <span className="text-base">Donations</span>
