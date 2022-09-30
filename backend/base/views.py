@@ -236,13 +236,15 @@ def get_all_ngo_states(request):
     return Response({"states": states}, status=status.HTTP_200_OK)
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def create_donation(request):
-#     donor = request.user
-#     data = request.data
-#     data['donor'] = donor.id
-#     serializer = DonationQuoteSerializer(data=data)
-#     serializer.is_valid(raise_exception=True)
-#     serializer.save()
-#     return Response({'message': 'Donation Created'}, status=status.HTTP_201_CREATED)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_donation(request):
+    donor = request.user
+    receiver = UserAccount.objects.get(id=request.data['receiver'])
+    data = request.data
+    data['donor'] = donor.id
+    data['receiver'] = receiver.id
+    serializer = DonationQuoteSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({'message': 'Donation Created'}, status=status.HTTP_201_CREATED)
