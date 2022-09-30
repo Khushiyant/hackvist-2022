@@ -243,7 +243,7 @@ def get_all_ngo_states(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_donation(request):
-    donor = request.user
+    donor = UserAccount.objects.get(id=request.user.id)
     receiver = UserAccount.objects.get(id=request.data['receiver'])
     data = request.data
     data['donor'] = donor.id

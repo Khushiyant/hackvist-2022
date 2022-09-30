@@ -21,4 +21,5 @@ urlpatterns = [
     path('refresh/', views.refresh, name="refresh"),
     path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
     path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"),
+    path('create-donation/', views.create_donation, name="create-donation"),
 ]
