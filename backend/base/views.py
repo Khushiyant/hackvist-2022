@@ -106,17 +106,23 @@ def user_details(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def ngo_details(request):
+    user = request.user
     ngo = NGO.objects.get(user=request.user)
-    serializer = NGOSerializer(ngo)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    serializer_user = UserProfileSerializer(user)
+    serializer_ngo = NGOSerializer(ngo)
+    return Response({'user':serializer_user.data,'ngo': serializer_ngo.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def community_details(request):
+    user = request.user
     community = Community.objects.get(user=request.user)
-    serializer = CommunitySerializer(community)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    serializer_user = UserProfileSerializer(user)
+    serializer_community = CommunitySerializer(community)
+    return Response({'user':serializer_user.data,'community': serializer_community.data}, status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])

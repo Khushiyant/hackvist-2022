@@ -1,4 +1,3 @@
-from multiprocessing import Event
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -63,9 +62,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    volunteer_at = models.ManyToManyField(Event, related_name='volunteers', blank=True)
+    volunteer_at = models.CharField(max_length=10, unique=False)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
+    is_registeration_complete = models.BooleanField(default=False)
 
     # audit fields
     created_at = models.DateTimeField(default=timezone.now)
