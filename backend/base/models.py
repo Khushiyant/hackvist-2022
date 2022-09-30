@@ -1,3 +1,4 @@
+from multiprocessing import Event
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -62,6 +63,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         max_length=20, choices=UserTypes.choices, default=UserTypes.INDIVIDUAL)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    volunteer_at = models.ManyToManyField(Event, related_name='volunteers', blank=True)
 
     premium_user_at = models.DateTimeField(null=True, default=None)
 
@@ -82,7 +84,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class NGO(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='ngo')
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     registration_number = models.CharField(max_length=255, default=None)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
@@ -95,14 +97,14 @@ class NGO(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.user.name
 
     def __str__(self):
-        return self.email
+        return self.user.email
 
 
 class Community(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='community')
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     members_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
     description = models.TextField()
@@ -113,10 +115,10 @@ class Community(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.user.name
 
     def __str__(self):
-        return self.name
+        return self.user.email
 
 
 class Event(models.Model):
@@ -177,7 +179,7 @@ class DonationQuote(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_name(self):
-        return self.name
+        return self.donor.name
 
     def __str__(self):
-        return self.name
+        return self.donor.email
