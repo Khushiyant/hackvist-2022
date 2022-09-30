@@ -1,5 +1,6 @@
 import json
 import os
+from re import U
 
 from django.contrib.auth import authenticate
 from rest_framework import status
@@ -128,39 +129,46 @@ def community_details(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_ngo(request):
-    user = request.user
-    ngo = NGO.objects.get(user=user)
-    serializer = NGOSerializer(instance=ngo, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'NGO Details Updated'}, status=status.HTTP_200_OK)
-
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        ngo = NGO.objects.get(user=user)
+        serializer = NGOSerializer(instance=ngo, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'NGO Details Updated'}, status=status.HTTP_200_OK)
+    except NGO.DoesNotExist:
+        return Response({'message': 'NGO Does Not Exist'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_community(request):
-    user = request.user
-    community = Community.objects.get(user=user)
-    serializer = CommunitySerializer(instance=community, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'Community Details Updated'}, status=status.HTTP_200_OK)
-
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        community = Community.objects.get(user=user)
+        serializer = CommunitySerializer(instance=community, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'Community Details Updated'}, status=status.HTTP_200_OK)
+    except Community.DoesNotExist:
+        return Response({'message': 'Community Not Found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_user(request):
-    user = request.user
-    serializer = UserProfileSerializer(instance=user, data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)
+    try:
+        user = UserAccount.objects.get(id=request.user.id)
+        serializer = UserProfileSerializer(instance=user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'User Details Updated'}, status=status.HTTP_200_OK)
+    except UserAccount.DoesNotExist:
+        return Response({'message': 'User Does Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_social_project(request):
-    user = request.user
+    user = UserAccount.objects.get(id=request.user.id)
     data = request.data
     data['maintainer'] = user.id
     serializer = SocialProjectSerializer(data=data)
@@ -172,7 +180,7 @@ def create_social_project(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_event(request):
-    user = request.user
+    user = UserAccount.objects.get(id=request.user.id)
     data = request.data
     data['organiser'] = user.id
     serializer = EventSerializer(data=data)
