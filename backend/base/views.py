@@ -12,7 +12,7 @@ from .models import NGO, Community, Event, SocialProject, UserAccount
 from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
                           SocialProjectSerializer,
                           UserChangePasswordSerializer, UserLoginSerializer,
-                          UserProfileSerializer, UserRegistrationSerializer)
+                          UserProfileSerializer, UserRegistrationSerializer, DonationQuoteSerializer)
 
 
 def get_tokens_for_user(user):
@@ -220,3 +220,15 @@ def valid_registeration_id(request, state, id):
 def get_all_ngo_states(request):
     states = [x.split(".")[0] for x in os.listdir("json/ngos")]
     return Response({"states": states}, status=status.HTTP_200_OK)
+
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def create_donation(request):
+#     donor = request.user
+#     data = request.data
+#     data['donor'] = donor.id
+#     serializer = DonationQuoteSerializer(data=data)
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return Response({'message': 'Donation Created'}, status=status.HTTP_201_CREATED)

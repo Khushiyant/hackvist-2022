@@ -43,6 +43,11 @@ class UserChangePasswordSerializer(serializers.Serializer):
         user.save()
         return attrs
 
+class DonationQuoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonationQuote
+        fields = '__all__'
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
