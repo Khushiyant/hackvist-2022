@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path("api-overview/", views.api_overview, name="api-overview"),
-    path('login/', views.login, name="login"),
-    path('registration/', views.register, name="registration"),
+    path('login/', views.login, name="login"), #Implemented
+    path('registration/', views.register, name="registration"), #Implemented
     path('ngo-register/', views.ngo_register, name="ngo-register"),
     path('community-register/', views.community_register, name="community-register"),
     path('user-details/', views.user_details, name="user-details"),
@@ -20,5 +20,5 @@ urlpatterns = [
     path('change-password/', views.change_password, name="change-password"), # 
     path('refresh/', views.refresh, name="refresh"),
     path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
-    path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"),
+    path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"), #Implemented
 ]

@@ -8,6 +8,9 @@ import urgentCauseImgThree from '../assets/Home_UrgentCauseImage-3.jpg'
 import recentCauseImgOne from '../assets/Home_RecentCauseImage-1.jpg'
 import recentCauseImgTwo from '../assets/Home_RecentCauseImage-2.jpg'
 import recentCauseImgThree from '../assets/Home_RecentCauseImage-3.jpg'
+import getInvolvedImgOne from '../assets/Home_GetInvolvedImage-1.jpg'
+import getInvolvedImgTwo from '../assets/Home_GetInvolvedImage-2.jpg'
+import errorImg from '../assets/Error_404Image.jpg'
 
 export const appImages = {
     homeSliderImgOne,
@@ -20,4 +23,7 @@ export const appImages = {
     recentCauseImgOne,
     recentCauseImgTwo,
     recentCauseImgThree,
+    getInvolvedImgOne,
+    getInvolvedImgTwo,
+    errorImg,
 }

@@ -1,22 +1,24 @@
 import { FaUser, FaPhoneAlt } from 'react-icons/fa'
-import { GrMail } from 'react-icons/gr'
+import { GrMail, GrList } from 'react-icons/gr'
 import { HiLockClosed, HiLink } from 'react-icons/hi'
 
 export const loginForm = [
     {
+        type: "input",
         icon: {
-            name: <FaUser />,
+            name: <GrMail />,
             size: "text-2xl"
         },
 
         input: {
             type: "text",
-            name: "userName",
-            placeholder: "Enter Your Full Name*",
+            name: "email",
+            placeholder: "Enter Your Email ID*",
             required: true,
         }
     },
     {
+        type: "input",
         icon: {
             name: <HiLockClosed />,
             size: "text-2xl"
@@ -24,7 +26,7 @@ export const loginForm = [
 
         input: {
             type: "password",
-            name: "userPassword",
+            name: "password",
             placeholder: "Enter Your Password*",
             required: true,
         }
@@ -33,6 +35,7 @@ export const loginForm = [
 
 export const signupForm = [
     {
+        type: "input",
         icon: {
             name: <FaUser />,
             size: "text-xl"
@@ -40,12 +43,13 @@ export const signupForm = [
 
         input: {
             type: "text",
-            name: "userName",
+            name: "name",
             placeholder: "Enter Your Full Name*",
             required: true,
         }
     },
     {
+        type: "input",
         icon: {
             name: <GrMail />,
             size: "text-2xl"
@@ -53,12 +57,13 @@ export const signupForm = [
 
         input: {
             type: "email",
-            name: "userEmail",
+            name: "email",
             placeholder: "Enter Your Email ID*",
             required: true,
         }
     },
     {
+        type: "input",
         icon: {
             name: <FaPhoneAlt />,
             size: "text-lg"
@@ -66,12 +71,13 @@ export const signupForm = [
 
         input: {
             type: "tel",
-            name: "userPhone",
+            name: "phone",
             placeholder: "Enter Your Phone Number*",
             required: true,
         }
     },
     {
+        type: "input",
         icon: {
             name: <HiLink />,
             size: "text-2xl"
@@ -79,12 +85,13 @@ export const signupForm = [
 
         input: {
             type: "url",
-            name: "userProfileImg",
+            name: "profile_image",
             placeholder: "Enter URL of Your Profile Image*",
             required: false,
         }
     },
     {
+        type: "input",
         icon: {
             name: <HiLockClosed />,
             size: "text-2xl"
@@ -92,12 +99,13 @@ export const signupForm = [
 
         input: {
             type: "password",
-            name: "userPassword",
+            name: "password",
             placeholder: "Enter Your Password*",
             required: true,
         }
     },
     {
+        type: "input",
         icon: {
             name: <HiLockClosed />,
             size: "text-2xl"
@@ -105,9 +113,29 @@ export const signupForm = [
 
         input: {
             type: "password",
-            name: "cnfrmPassword",
+            name: "confirmPassword",
             placeholder: "Confirm Your Password*",
             required: true,
         }
+    },
+    {
+        type: "select",
+        icon: {
+            name: <GrList />,
+            size: "text-2xl",
+        },
+
+        select: {
+            name: "user_type",
+            default: "",
+            required: true,
+        },
+
+        options: [
+            { value: "", disabled: true, text: "Select User Type*", },
+            { value: "INDIVIDUAL", disabled: false, text: "Individual", },
+            { value: "NGO", disabled: false, text: "NGO", },
+            { value: "COMMUNITY", disabled: false, text: "Community", },
+        ]
     },
 ]
