@@ -29,6 +29,16 @@ def get_tokens_for_user(user):
 
 
 @api_view(['GET'])
+def stats(request):
+    return Response({
+        'users': UserAccount.objects.count(),
+        'ngos': NGO.objects.count(),
+        'events': Event.objects.count(),
+        'social_projects': SocialProject.objects.count(),
+        'communities': Community.objects.count(),
+    })
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def refresh(request):
     user = request.user

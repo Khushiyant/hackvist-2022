@@ -24,5 +24,6 @@ urlpatterns = [
     path('reject-donation/<int:id>', views.reject_donation, name="reject-donation"),
     path('change-password/', views.change_password, name="change-password"),  
     path('refresh/', views.refresh, name="refresh"),
+    path('stats/', views.stats, name="stats"),
     path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"),
 ]
