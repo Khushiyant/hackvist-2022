@@ -20,6 +20,7 @@ urlpatterns = [
     path('get-all-projects/', views.get_all_projects, name="get-all-projects"),
     path('get-all-ngo-states/', views.get_all_ngo_states, name="get-all-ngo"), #Implemented
     path('get-all-donations/', views.get_all_donations, name="get-all-quotes"),
+    path('get-all-ngos/', views.get_all_ngos, name="get-all-ngos"),
     path('accept-donation/<int:id>', views.accept_donation, name="accept-donation"),
     path('reject-donation/<int:id>', views.reject_donation, name="reject-donation"),
     path('change-password/', views.change_password, name="change-password"),  

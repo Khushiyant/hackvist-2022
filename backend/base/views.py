@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .email_handler import EmailHandler
-
 from .models import (NGO, Community, DonationQuote, Event, SocialProject,
                      UserAccount)
 from .serializers import (CommunitySerializer, DonationQuoteSerializer,
@@ -38,6 +37,7 @@ def stats(request):
         'communities': Community.objects.count(),
     })
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def refresh(request):
@@ -64,7 +64,8 @@ def register(request):
         user.save()
     token = get_tokens_for_user(user)
     try:
-        email = EmailHandler("Welcome to the community", "Welcome to the community, hoping for successful journey with you", [data['email']])
+        email = EmailHandler("Welcome to the community",
+                             "Welcome to the community, hoping for successful journey with you", [data['email']])
         email.send()
     except Exception as e:
         print("Connection refused")
@@ -293,7 +294,8 @@ def accept_donation(request, id):
     donation.is_accepted = True
     donation.save()
     try:
-        email = EmailHandler("donation is accepted", f"Your donation quote is accepted by {donation.receiver.get_name()}\n\nAccepted at: {timezone.now()}",donation.receiver.email)
+        email = EmailHandler(
+            "donation is accepted", f"Your donation quote is accepted by {donation.receiver.get_name()}\n\nAccepted at: {timezone.now()}", donation.receiver.email)
         email.send()
     except Exception as e:
         print("Connection refused")
@@ -307,8 +309,17 @@ def reject_donation(request, id):
     donation.is_accepted = False
     donation.save()
     try:
-        email = EmailHandler("donation is rejected", f"Your donation quote is rejected by {donation.receiver.get_name()}\n\Rejected at: {timezone.now()}",donation.receiver.email)
+        email = EmailHandler(
+            "donation is rejected", f"Your donation quote is rejected by {donation.receiver.get_name()}\n\Rejected at: {timezone.now()}", donation.receiver.email)
         email.send()
     except Exception as e:
         print("Connection refused")
     return Response({'message': 'Donation Rejected'}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_ngos(request):
+    ngos = NGO.objects.all()
+    serializer = NGOSerializer(ngos, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
