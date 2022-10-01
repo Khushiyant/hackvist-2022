@@ -8,7 +8,7 @@ import GenerateForm from '../../components/common/GenerateForm'
 
 const Signup = () => {
     const navigate = useNavigate();
-    const { setAuthTokens } = useAuthContext();
+    const { setAuthTokens, setUserDetails } = useAuthContext();
 
     const formSubmitHandler = async (event) => {
         event.preventDefault();
@@ -42,8 +42,6 @@ const Signup = () => {
         let response = await fetch("http://localhost:8000/registration/", requestOptions);
         let data = await response.json();
 
-        console.log(response, data);
-
         if (response.status === 400) {
             toast.error("User Account With This Email or Phone Already Exists.", { position: "top-left" });
             return;
@@ -53,6 +51,7 @@ const Signup = () => {
             const { token, message } = data;
             setAuthTokens(token);
             localStorage.setItem('authTokens', JSON.stringify(token));
+            setUserDetails();
             formBody.reset();
             toast.success(message);
 

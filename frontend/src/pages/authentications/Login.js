@@ -8,7 +8,7 @@ import GenerateForm from '../../components/common/GenerateForm';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setAuthTokens, setUserDetails } = useAuthContext();
+    const { setAuthTokens, setUser } = useAuthContext();
 
     const formSubmitHandler = async (event) => {
         event.preventDefault();
@@ -39,14 +39,39 @@ const Login = () => {
             const { token, msg } = data;
             setAuthTokens(token);
             localStorage.setItem('authTokens', JSON.stringify(token));
-            setUserDetails();
-            formBody.reset();
-            toast.success(msg);
-            navigate('/');
-            return;
+
+            const authTokens = JSON.parse(localStorage.getItem('authTokens'));
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(authTokens.access)
+                },
+            }
+
+            fetch("http://localhost:8000/user-details/", requestOptions)
+                .then((response) => (response.json()))
+                .then((data) => {
+                    setUser(data);
+                    formBody.reset();
+                    toast.success(msg);
+
+                    if ((data.user_type === "INDIVIDUAL") || (data.is_registeration_complete)) {
+                        navigate('/');
+                    } else if (data.user_type === "NGO") {
+                        navigate('/registration/ngo');
+                    } else {
+                        navigate('/registration/community');
+                    }
+
+                    return;
+                })
+                .catch((err) => {
+                    console.error(err.message);
+                    toast.error("Something Went Wrong! Try Registering Again.");
+                })
         }
 
-        toast.error("Something Went Wrong! Try Registering Again.");
     }
 
     const handleRegistrationClick = () => {

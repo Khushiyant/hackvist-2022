@@ -1,11 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import useAuthContext from '../../hooks/useAuthContext'
 
+import { toast } from 'react-toastify';
 import { communityRegistration } from '../../constants/RegistrationForms'
 import GenerateForm from '../../components/common/GenerateForm'
 
 const CommunityRegistration = () => {
     const navigate = useNavigate();
+    const { authTokens, setUserDetails } = useAuthContext();
 
     const formSubmitHandler = (event) => {
         event.preventDefault();
@@ -14,13 +17,13 @@ const CommunityRegistration = () => {
 
         const credentials = {};
         formData.forEach((value, key) => (credentials[key] = value));
-        console.log(credentials);
 
         const requestOptions = {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + String(authTokens.access),
             },
             body: JSON.stringify(credentials),
         }
@@ -28,10 +31,14 @@ const CommunityRegistration = () => {
         fetch("http://localhost:8000/community-register/", requestOptions)
             .then((response) => (response.json()))
             .then((data) => {
-                console.log(data);
+                setUserDetails();
+                toast.success("Congratulations! Your registration Has Been Completed.");
+                formBody.reset();
+                navigate('/');
             })
             .catch((err) => {
                 console.error(err.message);
+                toast.error("Something Went Wrong! Please Try Again.");
             })
     }
 

@@ -30,7 +30,6 @@ fetch("http://localhost:8000/get-all-ngo-states/")
         console.error(err.message);
     })
 
-// ==================================================
 export const ngoRegistration = [
     {
         type: "select",
@@ -55,8 +54,8 @@ export const ngoRegistration = [
         },
 
         input: {
-            type: "number",
-            name: "registrationNo",
+            type: "text",
+            name: "registration_number",
             placeholder: "Enter NGO registration No*",
             required: true,
         }
@@ -70,7 +69,7 @@ export const ngoRegistration = [
 
         input: {
             type: "number",
-            name: "staffCount",
+            name: "staff_count",
             placeholder: "Enter Total Staff Count at NGO*",
             required: true,
         }
@@ -84,7 +83,7 @@ export const ngoRegistration = [
 
         input: {
             type: "number",
-            name: "volunteerCount",
+            name: "volunteers_count",
             placeholder: "Enter Total Volunteer Count at NGO*",
             required: true,
         }
@@ -133,7 +132,6 @@ export const ngoRegistration = [
     },
 ]
 
-// ==================================================
 export const communityRegistration = [
     {
         type: "input",
@@ -144,7 +142,7 @@ export const communityRegistration = [
 
         input: {
             type: "number",
-            name: "memberCount",
+            name: "members_count",
             placeholder: "Enter Total Member Count at Community*",
             required: true,
         }

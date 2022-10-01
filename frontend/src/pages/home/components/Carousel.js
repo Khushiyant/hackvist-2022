@@ -40,7 +40,7 @@ const Carousel = (props) => {
                             <div key={index} class='relative'>
                                 <img src={item.img} alt="Slider_Image" className="h-full object-cover" />
                                 <div className="grid place-content-center absolute inset-0 bg-black bg-opacity-60 text-white">
-                                    <h1 className="w-max mx-auto text-5xl font-roboto-slab font-bold">{item.heading}</h1>
+                                    <h1 className="w-max mx-auto text-5xl font-roboto-slab capitalize font-bold">{item.heading}</h1>
                                     <p className="max-w-[100ch] w-11/12 mx-auto text-center my-6 text-lg">{item.paragraph}</p>
                                     <div className="flex justify-center mt-4 gap-8">
                                         <button onClick={handleDonationClick} className="font-open-sans px-6 py-2 rounded-full text-lg font-medium bg-theme-orange">Donate Now</button>

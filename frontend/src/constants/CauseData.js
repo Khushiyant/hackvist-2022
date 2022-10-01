@@ -2,7 +2,7 @@ import { appImages } from "./Images"
 
 export const causeData = [
     {
-        causeType: "Urgent Causes",
+        causeType: [ "Urgent Causes" ],
         causeDataList: [
             {
                 img: appImages.urgentCauseImgOne,
@@ -37,10 +37,10 @@ export const causeData = [
         btnType: "Explore More"
     },
     {
-        causeType: "Explore Our Recent Causes That We Works",
+        causeType: [ "Explore Our Recent Causes", "That We Works" ],
         causeDataList: [
             {
-               img: appImages.recentCauseImgOne,
+                img: appImages.recentCauseImgOne,
                 heading: "Providing Healthy Food",
                 description: "This is done by organizing Food Donation Drive. Community/individual bring food donations to a place, on a specific date, where volunteers are waiting to receive it.",
             },

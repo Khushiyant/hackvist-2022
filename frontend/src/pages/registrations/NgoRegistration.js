@@ -1,43 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react'
+import {useNavigate } from 'react-router-dom';
+import useAuthContext from '../../hooks/useAuthContext';
 
+import { toast } from 'react-toastify';
 import { ngoRegistration } from '../../constants/RegistrationForms';
 import GenerateForm from '../../components/common/GenerateForm';
 
-/*========== 'NgoRegistration' function Starts Here ==========*/
 const NgoRegistration = () => {
     const navigate = useNavigate();
-    const [states, setStates] = useState([]);
+    const { authTokens, setUserDetails } = useAuthContext();
+    const { options } = ngoRegistration[0];
 
-    const getAllNgoStates = () => {
-        fetch("http://localhost:8000/get-all-ngo-states/")
-            .then((response) => (response.json()))
-            .then((data) => {
-                setStates(data.states);
-            })
-            .catch((err) => {
-                console.error(err.message);
-            })
-    }
-
-    useEffect(() => {
-        getAllNgoStates()
-    }, [])
-
-    const formSubmitHandler = (event) => {
+    const formSubmitHandler = async (event) => {
         event.preventDefault();
         const formBody = event.target;
+
+        const state = formBody.state.value;
+        const registrationNo = formBody.registration_number.value
+
+        let response = await fetch(`http://localhost:8000/valid-registeration-id/${state}/${registrationNo}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + String(authTokens.access)
+            },
+        })
+
+        let data = await response.json()
+
+        if (response.status === 400) {
+            toast.error(data.message);
+            return;
+        }
+
         const formData = new FormData(formBody);
 
         const credentials = {};
         formData.forEach((value, key) => (credentials[key] = value));
-        console.log(credentials);
 
         const requestOptions = {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + String(authTokens.access),
             },
             body: JSON.stringify(credentials),
         }
@@ -45,14 +51,18 @@ const NgoRegistration = () => {
         fetch("http://localhost:8000/ngo-register/", requestOptions)
             .then((response) => (response.json()))
             .then((data) => {
-                console.log(data);
+                setUserDetails();
+                toast.success("Congratulations! Your registration Has Been Completed.");
+                formBody.reset();
+                navigate('/');
             })
             .catch((err) => {
                 console.error(err.message);
+                toast.error("Something Went Wrong! Please Try Again.");
             })
     }
 
-    if (states) {
+    if (options.length > 1) {
         return (
             <>
                 <div className="bg-alabaster h-screen w-full flex flex-col justify-center items-start p-16">

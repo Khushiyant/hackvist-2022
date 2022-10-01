@@ -7,7 +7,7 @@ import { navLinks } from '../../constants/Navlinks';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const { user } = useAuthContext();
+    const { user, logoutUser } = useAuthContext();
 
     const handleDonationClick = () => {
         if (user) {
@@ -24,6 +24,11 @@ const Navbar = () => {
         } else {
             navigate('/registration/community');
         }
+    }
+
+    const handleLogoutClick = () => {
+        logoutUser();
+        toast.info("You Logged Out Successfully.")
     }
 
     return (
@@ -53,17 +58,22 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
-            <nav className="bg-alabaster">
-                <ul className="w-11/12 max-w-6xl mx-auto py-4 flex">
-                    {(navLinks).map((item, index) => {
-                        return (
-                            <li key={index} className="text-sm uppercase text-theme-text-secondary font-bold px-4 border-r-2 border-r-[#6A6A6A]/30">
-                                <Link to={item.path}>{item.name}</Link>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </nav>
+            <div className="bg-alabaster">
+                <nav className="bg-alabaster w-11/12 max-w-6xl mx-auto py-3 flex items-center justify-between">
+                    <ul className="flex items-center">
+                        {(navLinks).map((item, index) => {
+                            return (
+                                <li key={index} className="grid place-content-center text-sm uppercase text-theme-text-secondary font-bold px-4 border-r-2 border-r-[#6A6A6A]/30">
+                                    <Link to={item.path}>{item.name}</Link>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                    {(user) && (
+                        <button onClick={handleLogoutClick} className="grid place-content-center uppercase text-theme-text-primary font-bold">Logout</button>
+                    )}
+                </nav>
+            </div>
         </header>
     )
 }

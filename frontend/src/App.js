@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import useAuthContext from './hooks/useAuthContext';
 
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import jwt_decode from "jwt-decode";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,11 +22,27 @@ import Footer from './components/common/Footer'
 import { privateRoutes } from './constants/PrivateRoutes'
 
 const App = () => {
+  const navigate = useNavigate()
   const location = useLocation();
   const [tweet, setTweet] = useState("");
 
-  const { user, setUserDetails } = useAuthContext();
-  console.log(user);
+  const { user, setUserDetails, logoutUser } = useAuthContext();
+
+  const trackLocalStorage = (event) => {
+    console.log(event);
+    if (!event.key) {
+      toast.error("Something Went Wrong! Please Login Again.");
+      logoutUser();
+      navigate('/');
+      return;
+    }
+
+    if (event.key === "authTokens" && !event.newValue) {
+      toast.error("Something Went Wrong! Please Login Again.");
+      logoutUser();
+      navigate('/');
+    }
+  }
 
   const fetchTweets = () => {
     fetch("http://localhost:8000/tweets/ngo")
@@ -40,6 +56,9 @@ const App = () => {
   useEffect(() => {
     setUserDetails()
     // fetchTweets();
+    window.onstorage = event => {
+      trackLocalStorage(event);
+    }
   }, [])
 
   return (
