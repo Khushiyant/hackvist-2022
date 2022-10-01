@@ -29,6 +29,16 @@ def get_tokens_for_user(user):
 
 
 @api_view(['GET'])
+def stats(request):
+    return Response({
+        'users': UserAccount.objects.count(),
+        'ngos': NGO.objects.count(),
+        'events': Event.objects.count(),
+        'social_projects': SocialProject.objects.count(),
+        'communities': Community.objects.count(),
+    })
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def refresh(request):
     user = request.user
@@ -53,7 +63,11 @@ def register(request):
         user.is_registeration_complete = True
         user.save()
     token = get_tokens_for_user(user)
-
+    try:
+        email = EmailHandler("Welcome to the community", "Welcome to the community, hoping for successful journey with you", [data['email']])
+        email.send()
+    except Exception as e:
+        print("Connection refused")
     return Response({'token': token, 'message': 'Registration Successful'}, status=status.HTTP_201_CREATED)
 
 
@@ -278,8 +292,11 @@ def accept_donation(request, id):
     donation = DonationQuote.objects.get(id=id)
     donation.is_accepted = True
     donation.save()
-    # email = EmailHandler("donation is accepted", f"Your donation quote is accepted by {donation.receiver.get_name()}\n\nAccepted at: {timezone.now()}",donation.receiver.email)
-    # email.send()
+    try:
+        email = EmailHandler("donation is accepted", f"Your donation quote is accepted by {donation.receiver.get_name()}\n\nAccepted at: {timezone.now()}",donation.receiver.email)
+        email.send()
+    except Exception as e:
+        print("Connection refused")
     return Response({'message': 'Donation Accepted'}, status=status.HTTP_200_OK)
 
 
@@ -289,6 +306,9 @@ def reject_donation(request, id):
     donation = DonationQuote.objects.get(id=id)
     donation.is_accepted = False
     donation.save()
-    # email = EmailHandler("donation is rejected", f"Your donation quote is rejected by {donation.receiver.get_name()}\n\Rejected at: {timezone.now()}",donation.receiver.email)
-    # email.send()
+    try:
+        email = EmailHandler("donation is rejected", f"Your donation quote is rejected by {donation.receiver.get_name()}\n\Rejected at: {timezone.now()}",donation.receiver.email)
+        email.send()
+    except Exception as e:
+        print("Connection refused")
     return Response({'message': 'Donation Rejected'}, status=status.HTTP_200_OK)

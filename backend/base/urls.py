@@ -25,4 +25,5 @@ urlpatterns = [
     path('change-password/', views.change_password, name="change-password"),  
     path('refresh/', views.refresh, name="refresh"), #Implemented
     path('valid-registeration-id/<str:state>/<str:id>', views.valid_registeration_id, name="valid-registeration-id"), #Implemented
+    path('stats/', views.stats, name="stats"),
 ]
