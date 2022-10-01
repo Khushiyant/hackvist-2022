@@ -11,8 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import NGO, Community, Event, SocialProject, UserAccount, DonationQuote
 from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
-                          SocialProjectSerializer,
-                          UserChangePasswordSerializer, UserLoginSerializer,
+                          SocialProjectSerializer, UserLoginSerializer,
                           UserProfileSerializer, UserRegistrationSerializer, DonationQuoteSerializer)
 
 
