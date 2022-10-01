@@ -1,3 +1,4 @@
+from enum import unique
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -85,7 +86,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 class NGO(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
-    registration_number = models.CharField(max_length=255, default=None)
+    registration_number = models.CharField(max_length=255, default=None, unique=True)
     staff_count = models.IntegerField()
     volunteers_count = models.IntegerField()
     coordinator = models.CharField(max_length=50, default='None')
