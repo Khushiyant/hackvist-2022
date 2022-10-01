@@ -1,18 +1,22 @@
 import json
 import os
-from re import U
 
 from django.contrib.auth import authenticate
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import NGO, Community, Event, SocialProject, UserAccount, DonationQuote
-from .serializers import (CommunitySerializer, EventSerializer, NGOSerializer,
+from email_handler import EmailHandler
+
+from .models import (NGO, Community, DonationQuote, Event, SocialProject,
+                     UserAccount)
+from .serializers import (CommunitySerializer, DonationQuoteSerializer,
+                          EventSerializer, NGOSerializer,
                           SocialProjectSerializer, UserLoginSerializer,
-                          UserProfileSerializer, UserRegistrationSerializer, DonationQuoteSerializer)
+                          UserProfileSerializer, UserRegistrationSerializer)
 
 
 def get_tokens_for_user(user):
@@ -64,7 +68,7 @@ def login(request):
         token = get_tokens_for_user(user)
         is_premium = True if user.premium_user_at else False
         is_registered = True if user.is_registeration_complete else False
-        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium, 'registeration status' : is_registered}, status=status.HTTP_200_OK)
+        return Response({'token': token, 'msg': 'Login Success', 'premium_user': is_premium, 'registeration status': is_registered}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
@@ -274,6 +278,8 @@ def accept_donation(request, id):
     donation = DonationQuote.objects.get(id=id)
     donation.is_accepted = True
     donation.save()
+    # email = EmailHandler("donation is accepted", f"Your donation quote is accepted by {donation.receiver.get_name()}\n\nAccepted at: {timezone.now()}",donation.receiver.email)
+    # email.send()
     return Response({'message': 'Donation Accepted'}, status=status.HTTP_200_OK)
 
 
@@ -283,4 +289,6 @@ def reject_donation(request, id):
     donation = DonationQuote.objects.get(id=id)
     donation.is_accepted = False
     donation.save()
+    # email = EmailHandler("donation is rejected", f"Your donation quote is rejected by {donation.receiver.get_name()}\n\Rejected at: {timezone.now()}",donation.receiver.email)
+    # email.send()
     return Response({'message': 'Donation Rejected'}, status=status.HTTP_200_OK)
