@@ -24,23 +24,26 @@ const HowItWorks = () => {
                         <ContentCards
                             index="1"
                             heading="NGOs"
-                            description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis sint mollitia est maxime magni veritatis reiciendis, cum maiores. Ratione tempora quis quia, ad placeat sunt quisquam repellat reiciendis numquam laborum! Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+                            description="Kick things off with NGOs registering themselves on this platform &
+                             share their Story. Its a one stop in-person and virtual platform for NGOs to raise
+                              funds and donations from communities or individuals.
+                              Yogdan is gradually paving its way to become the most preferred platform to raise funds."
                         />
                         <ContentCards
                             index="2"
                             heading="Communities"
-                            description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis sint mollitia est maxime magni veritatis reiciendis, cum maiores. Ratione tempora quis quia, ad placeat sunt quisquam repellat reiciendis numquam laborum! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+                            description="Communities can host events and approach NGOs.They can find nearby authentic NGOs with all the information and send a proposal to NGO & if NGO accepts the proposal,communication between both Community and NGO happen via messenger. Once event is done, it could be a massive success. "
                         />
                         <ContentCards
                             index="3"
-                            heading="Donors"
-                            description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis sint mollitia est maxime magni veritatis reiciendis, cum maiores. Ratione tempora quis quia, ad placeat sunt quisquam repellat reiciendis numquam laborum! Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+                            heading="Donors"  
+                            description="Yogdan is a non-profitable and non-monetary organization. Any community can contribute monetarily as well as non-monetarily . Monetarily by contributing to a project or by giving money to NGOs to run and Non-Monetarily by organizing events to provide food,clothes or shelter to needy."
                         />
                         <ContentCards
                             index="4"
                             heading="Volunteers"
-                            description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis sint mollitia est maxime magni veritatis reiciendis, cum maiores. Ratione tempora quis quia, ad placeat sunt quisquam repellat reiciendis numquam laborum! Lorem ipsum dolor sit amet consectetur, adipisicing elit."
-                        />
+                            description="As an NGO volunteer, you'll help organizations that serve underprivileged communities. Your work will go a long way in expanding access to healthcare and education, improving human rights, and protecting the local environment.Become a volunteer for volunteering for a social cause."
+                            />
                     </div>
                 </div>
             </section>
