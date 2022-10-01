@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from email_handler import EmailHandler
+from .email_handler import EmailHandler
 
 from .models import (NGO, Community, DonationQuote, Event, SocialProject,
                      UserAccount)
