@@ -2,15 +2,18 @@ import json
 import os
 
 import requests
-from rest_framework.decorators import api_view, permission_classes
+from dotenv import load_dotenv
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-BEARER_TOKEN = os.environ.get('BEARER_TOKEN')
+def configure():
+    load_dotenv()
 
 
 @api_view(['GET'])
 def tweet_searching(request, field):
-    headers = {'Authorization': f'Bearer {BEARER_TOKEN}'}
+    configure()
+    headers = {'Authorization': f'Bearer {os.getenv("BEARER_TOKEN")}'}
     params = {'query': field}
     response = requests.get(
         'https://api.twitter.com/2/tweets/search/recent', params=params, headers=headers)
