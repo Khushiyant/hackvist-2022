@@ -8,7 +8,7 @@ import GenerateForm from '../../components/common/GenerateForm';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setAuthTokens } = useAuthContext();
+    const { setAuthTokens, setUserDetails } = useAuthContext();
 
     const formSubmitHandler = async (event) => {
         event.preventDefault();
@@ -28,9 +28,7 @@ const Login = () => {
         }
 
         let response = await fetch("http://localhost:8000/login/", requestOptions);
-        console.log(response);
         let data = await response.json();
-        console.log(data);
 
         if (response.status === 404) {
             toast.error("Email or Password is not Valid");
@@ -41,6 +39,7 @@ const Login = () => {
             const { token, msg } = data;
             setAuthTokens(token);
             localStorage.setItem('authTokens', JSON.stringify(token));
+            setUserDetails();
             formBody.reset();
             toast.success(msg);
             navigate('/');

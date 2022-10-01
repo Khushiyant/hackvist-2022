@@ -26,7 +26,7 @@ const Stats = () => {
                                 <BsFillHeartFill />
                             </span>
                             <span className="font-open-sans text-center text-4xl font-bold">
-                                200
+                                0
                                 <p className="text-lg font-normal">Successful Causes</p>
                             </span>
                         </div>
@@ -35,7 +35,7 @@ const Stats = () => {
                                 <BsGlobe />
                             </span>
                             <span className="font-open-sans text-center text-4xl font-bold">
-                                150
+                                0
                                 <p className="text-lg font-normal">Places Reached</p>
                             </span>
                         </div>
@@ -44,7 +44,7 @@ const Stats = () => {
                                 <BsFillPersonPlusFill />
                             </span>
                             <span className="font-open-sans text-center text-4xl font-bold">
-                                250+
+                                0
                                 <p className="text-lg font-normal">Active Donars</p>
                             </span>
                         </div>
@@ -53,7 +53,7 @@ const Stats = () => {
                                 <BsTrophyFill />
                             </span>
                             <span className="font-open-sans text-center text-4xl font-bold">
-                                120
+                                0
                                 <p className="text-lg font-normal">Successful Projects</p>
                             </span>
                         </div>

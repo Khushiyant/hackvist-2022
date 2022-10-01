@@ -53,6 +53,7 @@ const AuthState = (props) => {
         user,
         setAuthTokens,
         setUser,
+        setUserDetails,
     }
     return (
         <AuthContext.Provider value={contextDataValue}>

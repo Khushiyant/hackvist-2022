@@ -34,6 +34,18 @@ const GetInvolved = () => {
                             </span>
                         </div>
                     </div>
+                    <div className="bg-white shadow-md relative">
+                        <img src={appImages.getInvolvedImgTwo} alt="Get_Involved" className='aspect-square w-[300px]' />
+                        <div className="p-4 absolute inset-0 grid place-content-center bg-opacity-50 bg-black text-white cursor-pointer">
+                            <h2 className="text-2xl text-center">
+                                Host An <br />
+                                <span className='text-4xl uppercase font-semibold'>Event</span>
+                            </h2>
+                            <span className="grid place-content-center mt-6 text-4xl">
+                                <BsArrowRightCircleFill />
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </>

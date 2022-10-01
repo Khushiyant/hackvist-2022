@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import useAuthContext from './hooks/useAuthContext';
 
@@ -23,13 +23,29 @@ import { privateRoutes } from './constants/PrivateRoutes'
 
 const App = () => {
   const location = useLocation();
+  const [tweet, setTweet] = useState("");
 
-  const { user } = useAuthContext();
+  const { user, setUserDetails } = useAuthContext();
   console.log(user);
+
+  const fetchTweets = () => {
+    fetch("http://localhost:8000/tweets/ngo")
+      .then((response) => (response.json()))
+      .then((data) => {
+        console.log(data.data[0].text);
+        setTweet(data.data[0].text);
+      })
+  }
+
+  useEffect(() => {
+    setUserDetails()
+    // fetchTweets();
+  }, [])
 
   return (
     <>
       { (privateRoutes.includes(location.pathname)) && <Navbar /> }
+      {/* <p>{tweet}</p> */}
       <Routes>
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
