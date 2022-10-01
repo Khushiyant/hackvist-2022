@@ -20,8 +20,8 @@ export const causeData = [
             },
             {
                 img: appImages.urgentCauseImgOne,
-                heading: "Be Inspired by Changemakers",
-                description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus culpa expedita saepe ad. Totam repudiandae error ea! Temporibus accusamus veritatis minima, ipsa accusantium at laborum?",
+                heading: "EDUCATION AND TRAINING",
+                description: "Come, Join Save the Children or Donate to Educate Every Poor Child in India.Over the years, we have faced a multitude of issues but undeterred,we have devised several solutions that help us continue sharing the gift of education with underprivileged children.",
             },
             {
                 img: appImages.urgentCauseImgTwo,
@@ -61,13 +61,13 @@ export const causeData = [
             },
             {
                 img: appImages.recentCauseImgTwo,
-                heading: "Be Inspired by Changemakers",
-                description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus culpa expedita saepe ad. Totam repudiandae error ea! Temporibus accusamus veritatis minima, ipsa accusantium at laborum?",
+                heading: "Clothes Donation Drive",
+                description: "Our Clothes donation drive is exclusively meant for the children they donate reusable clothes, shoes, toys, stationery, furniture, electronics to trusted NGOs. Easy, transparent, hassle-free service.",
             },
             {
                 img: appImages.recentCauseImgThree,
-                heading: "Be Inspired by Changemakers",
-                description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus culpa expedita saepe ad. Totam repudiandae error ea! Temporibus accusamus veritatis minima, ipsa accusantium at laborum?",
+                heading: "Medical Mission",
+                description: "Get medical treatment funding to pay surgery, post-op care and hospital bills by starting a fundraiser in under five minutes. ",
             },
         ],
         btnType: "View More"
