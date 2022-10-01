@@ -1,11 +1,17 @@
-import { GrMail, GrList } from 'react-icons/gr'
+import { AiFillBank } from 'react-icons/ai'
+import { GrList } from 'react-icons/gr'
+import {
+    MdEventNote,
+    MdDescription,
+    MdLocationPin,
+    MdDateRange,
+} from 'react-icons/md'
 
-// ==================================================
 export const projectsForm = [
     {
         type: "input",
         icon: {
-            name: <GrList />,
+            name: <MdEventNote />,
             size: "text-2xl"
         },
 
@@ -19,7 +25,7 @@ export const projectsForm = [
     {
         type: "input",
         icon: {
-            name: <GrList />,
+            name: <MdDescription />,
             size: "text-2xl"
         },
 
@@ -33,7 +39,7 @@ export const projectsForm = [
     {
         type: "input",
         icon: {
-            name: <GrList />,
+            name: <MdLocationPin />,
             size: "text-2xl"
         },
 
@@ -47,14 +53,44 @@ export const projectsForm = [
     {
         type: "input",
         icon: {
-            name: <GrList />,
+            name: <MdDateRange />,
             size: "text-2xl"
         },
 
         input: {
-            type: "date",
+            type: "text",
             name: "start_date",
+            id: "date",
             placeholder: "Event Starts At*",
+            required: true,
+        }
+    },
+    {
+        type: "input",
+        icon: {
+            name: <MdDateRange />,
+            size: "text-2xl"
+        },
+
+        input: {
+            type: "text",
+            name: "end_date",
+            id: "date",
+            placeholder: "Event Ends At*",
+            required: true,
+        }
+    },
+    {
+        type: "input",
+        icon: {
+            name: <AiFillBank />,
+            size: "text-2xl"
+        },
+
+        input: {
+            type: "number",
+            name: "bank_account_number",
+            placeholder: "Enter Your Bank Account Number*",
             required: true,
         }
     },
@@ -66,9 +102,23 @@ export const projectsForm = [
         },
 
         input: {
-            type: "date",
-            name: "end_date",
-            placeholder: "Event Ends At*",
+            type: "text",
+            name: "bank_name",
+            placeholder: "Enter Name of Your Bank*",
+            required: true,
+        }
+    },
+    {
+        type: "input",
+        icon: {
+            name: <AiFillBank />,
+            size: "text-2xl"
+        },
+
+        input: {
+            type: "text",
+            name: "bank_ifsc",
+            placeholder: "Enter IFSC Code of Your Bank*",
             required: true,
         }
     },

@@ -15,6 +15,7 @@ import Login from './pages/authentications/Login'
 import Signup from './pages/authentications/Signup'
 import NgoRegistration from './pages/registrations/NgoRegistration'
 import CommunityRegistration from './pages/registrations/CommunityRegistration'
+import CreateEvents from './pages/createEvents/CreateEvents';
 import Home from './pages/home/Home'
 import Error from './pages/Error'
 import Footer from './components/common/Footer'
@@ -29,7 +30,6 @@ const App = () => {
   const { user, setUserDetails, logoutUser } = useAuthContext();
 
   const trackLocalStorage = (event) => {
-    console.log(event);
     if (!event.key) {
       toast.error("Something Went Wrong! Please Login Again.");
       logoutUser();
@@ -74,6 +74,7 @@ const App = () => {
         <Route path='/signup' element={<Signup />} />
         <Route path='/registration/ngo' element={<NgoRegistration />} />
         <Route path='/registration/community' element={<CommunityRegistration />} />
+        <Route path='/create/:type' element={<CreateEvents />} />
         <Route path='/' element={<Home />} exact />
         <Route path='*' element={<Error />} />
       </Routes>

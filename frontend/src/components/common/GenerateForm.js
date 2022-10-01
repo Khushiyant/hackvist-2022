@@ -1,6 +1,19 @@
 import React from 'react'
 
 const GenerateForm = (props) => {
+
+    const handleInputFocus = (event) => {
+        const input = event.target;
+
+        if (input.id === "date") {
+            input.type = "date";
+
+            input.onblur = () => {
+                input.type = "text"
+            }
+        }
+    }
+
     return (
         <>
             {(props.formInputs).map((item, index) => {
@@ -15,11 +28,12 @@ const GenerateForm = (props) => {
                                 <input
                                     type={item.input.type}
                                     name={item.input.name}
-                                    id={item.input.name}
+                                    id={(item.input.id) ? (item.input.id) : (item.input.name)}
                                     placeholder={item.input.placeholder}
                                     required={item.input.required}
                                     autoComplete='off'
                                     className="w-full p-2 focus:outline-none"
+                                    onFocus={(event) => handleInputFocus(event)}
                                 />
                             ) :
                             (
