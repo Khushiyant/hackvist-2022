@@ -129,6 +129,9 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     active_at = models.DateTimeField(null=True)
+    bank_account_number = models.CharField(max_length=255, default=None)
+    bank_name = models.CharField(max_length=255, default=None)
+    bank_ifsc = models.CharField(max_length=255, default=None)
 
     # auditing model
     created_at = models.DateTimeField(default=timezone.now)
@@ -149,6 +152,9 @@ class SocialProject(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     active_at = models.DateTimeField(null=True)
+    bank_account_number = models.CharField(max_length=255, default=None)
+    bank_name = models.CharField(max_length=255, default=None)
+    bank_ifsc = models.CharField(max_length=255, default=None)
 
     # auditing model
     created_at = models.DateTimeField(default=timezone.now)
