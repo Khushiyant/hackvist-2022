@@ -16,6 +16,8 @@ const Explore = () => {
                         return (
                             <CauseCard
                                 key={index}
+                                id={item.id}
+                                type={"explore"}
                                 img={appImages.recentCauseImgOne}
                                 title={item.name}
                                 description={item.description}

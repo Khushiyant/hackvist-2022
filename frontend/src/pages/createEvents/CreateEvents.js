@@ -48,8 +48,8 @@ const CreateEvents = () => {
                 toast.success("Congratulations! Your Project Has Been Created Successfully.");
             }
 
-            // formBody.reset();
-            // navigate('/');
+            formBody.reset();
+            navigate('/');
             return;
         }
 

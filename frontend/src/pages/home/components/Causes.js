@@ -26,6 +26,8 @@ const Causes = (props) => {
                         return (
                             <CauseCard
                                 key={index}
+                                id={item.id}
+                                type={(props.causeType[0] === "Urgent Causes") ? "events" : "projects"}
                                 img={appImages.recentCauseImgOne}
                                 title={item.name}
                                 description={item.description}

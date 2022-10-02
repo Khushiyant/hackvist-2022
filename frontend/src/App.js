@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import useAuthContext from './hooks/useAuthContext';
 
 import { toast, ToastContainer } from 'react-toastify';
-import jwt_decode from "jwt-decode";
 import 'react-toastify/dist/ReactToastify.css';
 
 import Navbar from './components/common/Navbar'
@@ -27,7 +31,7 @@ import { privateRoutes } from './constants/PrivateRoutes'
 const App = () => {
   const navigate = useNavigate()
   const location = useLocation();
-  const [tweet, setTweet] = useState("");
+  const [tweets, setTweets] = useState([]);
 
   const { user, setUserDetails, logoutUser } = useAuthContext();
 
@@ -47,11 +51,11 @@ const App = () => {
   }
 
   const fetchTweets = () => {
-    fetch("http://localhost:8000/tweets/donate")
+    fetch("http://localhost:8000/tweets/milaap")
       .then((response) => (response.json()))
       .then((data) => {
         console.table(data.data[0]);
-        setTweet(data.data[0].text);
+        setTweets(data.data);
       })
   }
 
@@ -66,13 +70,21 @@ const App = () => {
   return (
     <>
       { (privateRoutes.includes(location.pathname)) && <Navbar /> }
-      {/* <p>{tweet}</p> */}
+      {/* {(tweets).map((tweet) => {
+        return (
+          <>
+          <p key={tweet.id}>{tweet.text}</p>
+          <br />
+          </>
+        )
+      })} */}
       <Routes>
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/explore' element={<Explore />} />
-        <Route path='/events' element={<Events />} exact />
         <Route path='/events/:id' element={<SingleEvent />} />
+        <Route path='/explore/:id' element={<SingleEvent />} />
+        <Route path='/events' element={<Events />} exact />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/registration/ngo' element={<NgoRegistration />} />

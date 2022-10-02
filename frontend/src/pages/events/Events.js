@@ -16,6 +16,8 @@ const Events = () => {
                         return (
                             <CauseCard
                                 key={index}
+                                id={item.id}
+                                type={"events"}
                                 img={appImages.recentCauseImgOne}
                                 title={item.name}
                                 description={item.description}

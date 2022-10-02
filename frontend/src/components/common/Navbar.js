@@ -28,6 +28,7 @@ const Navbar = () => {
 
     const handleLogoutClick = () => {
         logoutUser();
+        navigate('/');
         toast.info("You Logged Out Successfully.")
     }
 
@@ -59,8 +60,8 @@ const Navbar = () => {
                 </div>
             </div>
             <div className="bg-alabaster">
-                <nav className="bg-alabaster w-11/12 max-w-6xl mx-auto py-3 flex items-center justify-between">
-                    <ul className="flex items-center">
+                <nav className="bg-alabaster w-11/12 max-w-6xl mx-auto py-3 flex items-center gap-4 justify-between">
+                    <ul className="flex flex-1 items-center">
                         {(navLinks).map((item, index) => {
                             return (
                                 <li key={index} className="grid place-content-center text-sm uppercase text-theme-text-secondary font-bold px-4 border-r-2 border-r-[#6A6A6A]/30">
@@ -69,6 +70,9 @@ const Navbar = () => {
                             )
                         })}
                     </ul>
+                    {(user) && (
+                        <button onClick={() => navigate('/chatroom')} className="grid place-content-center uppercase text-theme-text-primary font-bold">Join Chatroom</button>
+                    )}
                     {(user) && (
                         <button onClick={handleLogoutClick} className="grid place-content-center uppercase text-theme-text-primary font-bold">Logout</button>
                     )}
