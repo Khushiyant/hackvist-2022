@@ -39,18 +39,17 @@ def send(request):
 
 
 @api_view(['POST'])
-@permission_classes(['IsAuthenticated'])
 def checkview(request):
     data = request.data
     data['sender'] = request.user.id
     data['room'] = UserAccount.objects.get(name=data['name']).id
 
     # Check if the user has a accepted donation quote
-    donation_quote = DonationQuote.objects.filter(
-        user=request.user.id, is_accepted=True, reciever = UserAccount.objects.get(name=data['name']))
-    if donation_quote:
+    # donation_quote = DonationQuote.objects.filter(
+    #     user=request.user.id, is_accepted=True, reciever = UserAccount.objects.get(name=data['name']))
+    # if donation_quote:
         # redirect to the room endpoint
-        return Response({'redirect': f'/chatroom/{data["name"]}/'})
-    else:
-        return Response({'message': 'You don\'t access to this room'})
+    return Response({'redirect': f'/chatroom/{data["name"]}/'})
+    # else:
+        # return Response({'message': 'You don\'t access to this room'})
 
