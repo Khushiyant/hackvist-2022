@@ -11,6 +11,8 @@ import recentCauseImgThree from '../assets/Home_RecentCauseImage-3.jpg'
 import getInvolvedImgOne from '../assets/Home_GetInvolvedImage-1.jpg'
 import getInvolvedImgTwo from '../assets/Home_GetInvolvedImage-2.jpg'
 import errorImg from '../assets/Error_404Image.jpg'
+import logoTransparent from '../assets/LogoImage-Transparent.png'
+import logo from '../assets/LogoImage.png'
 
 export const appImages = {
     homeSliderImgOne,
@@ -26,4 +28,6 @@ export const appImages = {
     getInvolvedImgOne,
     getInvolvedImgTwo,
     errorImg,
+    logoTransparent,
+    logo
 }

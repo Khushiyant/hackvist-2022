@@ -105,6 +105,7 @@ const AuthState = (props) => {
         setUserDetails,
         logoutUser,
         updateToken,
+        loading,
     }
 
     return (

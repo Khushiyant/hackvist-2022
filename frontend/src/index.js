@@ -9,11 +9,11 @@ import AuthState from './context/AuthContext/AuthState';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <AppState>
-      <AuthState>
-        <Router>
-          <App />
-        </Router>
-      </AuthState>
-    </AppState>
+    <AuthState>
+      <AppState>
+          <Router>
+            <App />
+          </Router>
+      </AppState>
+    </AuthState>
 );

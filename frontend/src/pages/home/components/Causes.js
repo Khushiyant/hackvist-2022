@@ -1,15 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { appImages } from '../../../constants/Images'
 import CauseCard from '../../../components/core/homepage/CauseCard'
 
 const Causes = (props) => {
     const navigate = useNavigate();
 
     const handleBtnClick = () => {
-        (props.causeType === "Urgent Causes") ?
-        (navigate('/explore')) :
-        (navigate('/events'))
+        (props.causeType[0] === "Urgent Causes") ?
+        (navigate('/events')) :
+        (navigate('/explore'))
     }
 
     return (
@@ -25,10 +26,10 @@ const Causes = (props) => {
                         return (
                             <CauseCard
                                 key={index}
-                                img={item.img}
-                                title={item.heading}
+                                img={appImages.recentCauseImgOne}
+                                title={item.name}
                                 description={item.description}
-                                btnType = {(props.causeType === "Urgent Causes") ? "Donate" : "View Cause"}
+                                btnType = {(props.causeType[0] === "Urgent Causes") ? "Donate" : "View Cause"}
                             />
                         )
                     })}
