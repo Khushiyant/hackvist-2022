@@ -320,6 +320,7 @@ def reject_donation(request, id):
 def get_all_ngos(request):
     ngos = NGO.objects.all()
     names = [ngo.get_name() for ngo in ngos]
+
     serializer = NGOSerializer(ngos, many=True)
     # add names to the data
     for i in range(len(serializer.data)):
