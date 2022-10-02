@@ -319,5 +319,9 @@ def reject_donation(request, id):
 @permission_classes([IsAuthenticated])
 def get_all_ngos(request):
     ngos = NGO.objects.all()
+    names = [ngo.get_name() for ngo in ngos]
     serializer = NGOSerializer(ngos, many=True)
+    # add names to the data
+    for i in range(len(serializer.data)):
+        serializer.data[i]['name'] = names[i]
     return Response(serializer.data, status=status.HTTP_200_OK)
