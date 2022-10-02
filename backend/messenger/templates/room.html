@@ -73,7 +73,7 @@ $(document).ready(function(){
 setInterval(function(){
     $.ajax({
         type: 'GET',
-        url : "/get-messages/{{room}}/",
+        url : "chatroom/get-messages/{{room}}/",
         success: function(response){
             console.log(response);
             $("#display").empty();
