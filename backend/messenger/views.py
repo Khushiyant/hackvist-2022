@@ -39,7 +39,7 @@ def send(request):
 
 
 @api_view(['POST'])
-@permission_classes(['IsAuthenticated'])
+# @permission_classes(['IsAuthenticated'])
 def checkview(request):
     data = request.data
     data['sender'] = request.user.id

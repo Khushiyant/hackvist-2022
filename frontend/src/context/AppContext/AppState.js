@@ -9,30 +9,16 @@ const AppState = (props) => {
     const { loading, authTokens } = useAuthContext();
 
     const getAllEvents = async () => {
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + String(authTokens.access)
-            },
-        }
 
-        const response = await fetch("http://localhost:8000/get-all-events/", requestOptions)
+        const response = await fetch("http://localhost:8000/get-all-events/")
         const data = await response.json();
 
         setEvents(data)
     }
 
     const getAllProjects = async () => {
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + String(authTokens.access)
-            },
-        }
 
-        const response = await fetch("http://localhost:8000/get-all-projects/", requestOptions)
+        const response = await fetch("http://localhost:8000/get-all-projects/")
         const data = await response.json();
 
         setProjects(data)
