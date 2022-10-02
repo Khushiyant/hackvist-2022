@@ -233,7 +233,6 @@ def change_password(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_all_events(request):
     events = Event.objects.all()
     serializer = EventSerializer(events, many=True)
@@ -241,7 +240,6 @@ def get_all_events(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_all_projects(request):
     projects = SocialProject.objects.all()
     serializer = SocialProjectSerializer(projects, many=True)
